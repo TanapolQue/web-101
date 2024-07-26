@@ -1,0 +1,58 @@
+/* สิ่งที่อยู่ตรงนี้ จะมีไว้ให้แค่ dev อ่าน*/
+/* 1.แต่งใคร (id, class, DOM) 2.แต่งอะไร */
+@font-face {
+    font-family: 'kanit';
+    src: url('./Kanit/Kanit-Regular.ttf'); /* ใส่ได้ 2 แบบ 1.relative path 2. absolute path */
+}
+
+body {
+    font-family: 'kanit';
+}
+
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: azure ;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.header {
+    font-size: 30px;
+    text-align: center;
+}
+
+.header-form {
+    width: 140px;
+}
+
+.flex {
+    display: flex;
+}
+
+.form-input {
+    margin-bottom: 10px;
+}
+
+input.form, textarea {
+    border: 1px gainsboro solid;
+    width: 100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.button {
+    border: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #2962ff;
+}
+
+@media screen and (max-width: 768px) {
+    .flex {
+        flex-direction: column;
+    }
+}
