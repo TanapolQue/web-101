@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <input id="fileUpload" type="file">
+    <button onclick="uploadFile()">Upload</button>
+    <button onclick="cancelUpload()">Cancel</button>
+    <progress id="uploadProgress" max="100" value="0" style="width: 100%;"></progress>
+
+    <script>
+        let currentSource 
+        const uploadFile = async () => {
+            const fileUpload = document.getElementById('fileUpload')
+
+            if (!fileUpload.files.length) {
+                return alert('Please choose a file to upload')
+            }
+            
+            const selectedFile = fileUpload.files[0]
+            const formData = new FormData()
+            formData.append('test', selectedFile)
+            try {
+                const source = axios.CancelToken.source()
+                currentSource = source
+                const response = await axios.post('http://localhost:8000/upload', formData, {
+                    hearders: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    onUploadProgress: function (progressValue) {
+                        uploadProgress.value = (progressValue.progress)  * 100 
+                    },
+                    cancelToken: source.token
+                })
+
+                console.log('server response', response.data)
+                alert('Upload Successful')
+            } catch (error) {
+                console.log('error', error)
+                if (axios.isCancel(error)) {
+                    alert('Cancel upload')
+                } else {
+                    if (error.response) {
+                        alert(error.response.data.message)
+                    } else {
+                        alert('something wrong when upload')
+                    }
+                }
+                
+                uploadProgress.value = 0
+            }
+        }
+
+        const cancelUpload = () => {
+            if (currentSource) {
+                currentSource.cancel('Cancel upload')
+            }
+        }
+
+
+    </script>
+    
+</body>
+</html>
